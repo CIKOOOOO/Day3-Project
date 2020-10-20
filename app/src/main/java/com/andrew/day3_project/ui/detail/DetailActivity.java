@@ -179,7 +179,6 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
     @Override
     public void onBackPressed() {
         if (type.equals(Constant.FAVORITE_TYPE)) {
-            Log.e("asd", "favorite");
             setResult(100);
             finish();
         } else
