@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Popular Movie</string>
+    <string name="menu_favorite">Favorites</string>
+    <string name="menu_top_rated">Top Rated</string>
+    <string name="menu_popular">Popular</string>
+    <string name="trailer">Trailers</string>
+    <string name="review">Reviews</string>
+    <string name="release_date">Release Date: </string>
+    <string name="rate">Rating:</string>
+</resources>
