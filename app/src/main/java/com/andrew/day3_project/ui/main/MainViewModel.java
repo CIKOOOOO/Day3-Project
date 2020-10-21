@@ -21,12 +21,12 @@ import com.google.gson.Gson;
 
 import org.json.JSONObject;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class MainViewModel extends AndroidViewModel {
 
     private MutableLiveData<List<Movie>> liveData;
+    private LiveData<List<MovieEntity>> data;
     private MainCallback callback;
     private Context mContext;
 
@@ -39,6 +39,10 @@ public class MainViewModel extends AndroidViewModel {
         mContext = application.getApplicationContext();
         liveData = new MutableLiveData<>();
         getData(Constant.POPULAR_TYPE);
+    }
+
+    public LiveData<List<MovieEntity>> getData() {
+        return data;
     }
 
     public LiveData<List<Movie>> getLiveData() {
@@ -54,13 +58,7 @@ public class MainViewModel extends AndroidViewModel {
     }
 
     public void favoriteData() {
-        List<MovieEntity> movieEntityList = ApplicationDB.getInstance(mContext).movieDao().selectMovie();
-        List<Movie> movieList = new ArrayList<>();
-        for (MovieEntity movieEntity : movieEntityList) {
-            Movie movie = convertToMovieEntity(movieEntity);
-            movieList.add(movie);
-        }
-        liveData.postValue(movieList);
+        data = ApplicationDB.getInstance(mContext).movieDao().selectMovie();
     }
 
     private void getData(String type) {
@@ -85,7 +83,7 @@ public class MainViewModel extends AndroidViewModel {
                 });
     }
 
-    private Movie convertToMovieEntity(MovieEntity movie) {
+    private Movie convertToMovie(MovieEntity movie) {
         Gson gson = new Gson();
         String data = gson.toJson(movie);
         return gson.fromJson(data, Movie.class);

@@ -19,13 +19,16 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.andrew.day3_project.R;
+import com.andrew.day3_project.db.entity.MovieEntity;
 import com.andrew.day3_project.model.Movie;
 import com.andrew.day3_project.ui.detail.DetailActivity;
 import com.andrew.day3_project.utils.Constant;
 import com.andrew.day3_project.utils.CustomLoading;
+import com.andrew.day3_project.utils.Utils;
 import com.androidnetworking.AndroidNetworking;
 import com.google.gson.Gson;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements RecyclerAdapter.onItemClickListener, MainCallback {
@@ -61,18 +64,18 @@ public class MainActivity extends AppCompatActivity implements RecyclerAdapter.o
 
         viewModel = new ViewModelProvider(this).get(MainViewModel.class);
         viewModel.setCallback(this);
+
         viewModel.getLiveData().observe(this, new Observer<List<Movie>>() {
             @Override
             public void onChanged(List<Movie> movies) {
-                if (movies != null && movies.size() > 0) {
-                    recyclerView.setLayoutManager(new GridLayoutManager(MainActivity.this, 2));
-                } else {
-                    recyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
-                }
-                adapter.setMovieList(movies);
-                adapter.notifyDataSetChanged();
-                if (customLoading != null && customLoading.getTag() != null) {
-                    customLoading.dismiss();
+                if(movies != null){
+                    if (movies.size() > 0) {
+                        recyclerView.setLayoutManager(new GridLayoutManager(MainActivity.this, 2));
+                    } else {
+                        recyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
+                    }
+                    adapter.setMovieList(movies);
+                    adapter.notifyDataSetChanged();
                 }
             }
         });
@@ -102,6 +105,26 @@ public class MainActivity extends AppCompatActivity implements RecyclerAdapter.o
                 title = "Favorite Movie";
                 type = Constant.FAVORITE_TYPE;
                 viewModel.favoriteData();
+
+                viewModel.getData().observe(this, new Observer<List<MovieEntity>>() {
+                    @Override
+                    public void onChanged(List<MovieEntity> movies) {
+                        if(movies != null){
+                            if (movies.size() > 0) {
+                                recyclerView.setLayoutManager(new GridLayoutManager(MainActivity.this, 2));
+                            } else {
+                                recyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
+                            }
+                            List<Movie> movieList = new ArrayList<>();
+                            for (MovieEntity movieEntity : movies) {
+                                Movie movie = Utils.convertToMovie(movieEntity);
+                                movieList.add(movie);
+                            }
+                            adapter.setMovieList(movieList);
+                            adapter.notifyDataSetChanged();
+                        }
+                    }
+                });
                 break;
         }
         ActionBar actionBar = getSupportActionBar();
@@ -132,8 +155,8 @@ public class MainActivity extends AppCompatActivity implements RecyclerAdapter.o
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(resultCode == 100){
-            viewModel.favoriteData();
+        if (resultCode == 100) {
+//            viewModel.favoriteData();
         }
     }
 }

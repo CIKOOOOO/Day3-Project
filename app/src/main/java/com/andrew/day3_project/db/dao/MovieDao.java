@@ -1,5 +1,6 @@
 package com.andrew.day3_project.db.dao;
 
+import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
@@ -16,7 +17,7 @@ public interface MovieDao {
     void insertFavoriteMovie(MovieEntity movieEntity);
 
     @Query("SELECT * FROM MovieEntity")
-    List<MovieEntity> selectMovie();
+    LiveData<List<MovieEntity>> selectMovie();
 
     @Query("SELECT * FROM MovieEntity WHERE id = :id")
     MovieEntity selectSpecificMovie(int id);
