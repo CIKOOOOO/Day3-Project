@@ -3,7 +3,6 @@ package com.andrew.day3_project.ui.detail;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
@@ -64,6 +63,7 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setDisplayShowHomeEnabled(true);
+            actionBar.setTitle("Detail Movie");
         }
 
         trailerAdapter = new SingleTextAdapter(this);

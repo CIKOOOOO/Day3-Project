@@ -121,11 +121,6 @@ public class MainActivity extends AppCompatActivity implements RecyclerAdapter.o
     }
 
     @Override
-    public void onSuccess() {
-
-    }
-
-    @Override
     public void onFailed() {
         Log.e(TAG, "ERROR - Android Fast Networking");
         Toast.makeText(MainActivity.this, "Error - Please try again later", Toast.LENGTH_SHORT).show();
