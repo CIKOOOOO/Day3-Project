@@ -19,6 +19,9 @@ public interface MovieDao {
     @Query("SELECT * FROM MovieEntity")
     LiveData<List<MovieEntity>> selectMovie();
 
+    @Query("SELECT * FROM MovieEntity")
+    List<MovieEntity> selectMovieList();
+
     @Query("SELECT * FROM MovieEntity WHERE id = :id")
     MovieEntity selectSpecificMovie(int id);
 

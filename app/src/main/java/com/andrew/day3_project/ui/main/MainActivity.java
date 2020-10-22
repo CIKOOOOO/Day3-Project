@@ -19,16 +19,13 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.andrew.day3_project.R;
-import com.andrew.day3_project.db.entity.MovieEntity;
 import com.andrew.day3_project.model.Movie;
 import com.andrew.day3_project.ui.detail.DetailActivity;
 import com.andrew.day3_project.utils.Constant;
 import com.andrew.day3_project.utils.CustomLoading;
-import com.andrew.day3_project.utils.Utils;
 import com.androidnetworking.AndroidNetworking;
 import com.google.gson.Gson;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements RecyclerAdapter.onItemClickListener, MainCallback {
@@ -106,25 +103,31 @@ public class MainActivity extends AppCompatActivity implements RecyclerAdapter.o
                 type = Constant.FAVORITE_TYPE;
                 viewModel.favoriteData();
 
-                viewModel.getData().observe(this, new Observer<List<MovieEntity>>() {
-                    @Override
-                    public void onChanged(List<MovieEntity> movies) {
-                        if(movies != null){
-                            if (movies.size() > 0) {
-                                recyclerView.setLayoutManager(new GridLayoutManager(MainActivity.this, 2));
-                            } else {
-                                recyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
-                            }
-                            List<Movie> movieList = new ArrayList<>();
-                            for (MovieEntity movieEntity : movies) {
-                                Movie movie = Utils.convertToMovie(movieEntity);
-                                movieList.add(movie);
-                            }
-                            adapter.setMovieList(movieList);
-                            adapter.notifyDataSetChanged();
-                        }
-                    }
-                });
+                /*
+                * If we use live data, the adapter will replace previous data with favorite data
+                * Even though the type of movie is either popular or top rated
+                * If we want to use live data, it will be better if we doesn't use the same adapter with mutable live data
+                * */
+
+//                viewModel.getData().observe(this, new Observer<List<MovieEntity>>() {
+//                    @Override
+//                    public void onChanged(List<MovieEntity> movies) {
+//                        if(movies != null){
+//                            if (movies.size() > 0) {
+//                                recyclerView.setLayoutManager(new GridLayoutManager(MainActivity.this, 2));
+//                            } else {
+//                                recyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
+//                            }
+//                            List<Movie> movieList = new ArrayList<>();
+//                            for (MovieEntity movieEntity : movies) {
+//                                Movie movie = Utils.convertToMovie(movieEntity);
+//                                movieList.add(movie);
+//                            }
+//                            adapter.setMovieList(movieList);
+//                            adapter.notifyDataSetChanged();
+//                        }
+//                    }
+//                });
                 break;
         }
         ActionBar actionBar = getSupportActionBar();
@@ -156,7 +159,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerAdapter.o
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == 100) {
-//            viewModel.favoriteData();
+            viewModel.favoriteData();
         }
     }
 }

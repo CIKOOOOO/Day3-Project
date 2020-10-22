@@ -21,6 +21,7 @@ import com.google.gson.Gson;
 
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MainViewModel extends AndroidViewModel {
@@ -58,7 +59,15 @@ public class MainViewModel extends AndroidViewModel {
     }
 
     public void favoriteData() {
-        data = ApplicationDB.getInstance(mContext).movieDao().selectMovie();
+        List<MovieEntity> movieEntityList = ApplicationDB.getInstance(mContext).movieDao().selectMovieList();
+        List<Movie> movieList = new ArrayList<>();
+
+        for (MovieEntity movieEntity: movieEntityList) {
+            Movie movie = convertToMovie(movieEntity);
+            movieList.add(movie);
+        }
+
+        liveData.postValue(movieList);
     }
 
     private void getData(String type) {
