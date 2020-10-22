@@ -106,7 +106,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerAdapter.o
                 /*
                 * If we use live data, the adapter will replace previous data with favorite data
                 * Even though the type of movie is either popular or top rated
-                * If we want to use live data, it will be better if we doesn't use the same adapter with mutable live data
+                * If we want to use live data, it will be better if we doesn't use or combine the same adapter with mutable live data
                 * */
 
 //                viewModel.getData().observe(this, new Observer<List<MovieEntity>>() {
